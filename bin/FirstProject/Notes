@@ -1,0 +1,81 @@
+The Java Collections Framework is a collection of interfaces and classes which helps in storing and processing the data efficiently. This framework has several useful classes which have tons of useful functions which makes a programmer task super easy.
+Collections:
+List-- A List is an ordered Collection (sometimes called a sequence). Lists may contain duplicate elements. 
+Below are classes implement List interface:
+ArrayList,
+LinkedList,
+Vectors,
+-------------------------
+
+Map
+• A Map is an object that maps keys to values. A map cannot contain duplicate keys.
+• Below are the main implementations of Map interfaces:
+ HashMap
+ TreeMap
+ LinkedHashMap
+-------------------------
+
+Packages:
+syntax to import package in a program: import.packageName.className;
+java.lang package comes in built with java complier
+-------------------------
+
+Access modifiers:
+default: methods are accessible within the package
+public: methods are accessible everywhere without any limitations
+private: methods are accessible only within the class
+protected: methods/ variable are only accessible in the sub classes only
+-------------------------
+
+Stream API:
+What are the cases when stream is getting consumed?
+A stream in Java is considered consumed when it has been traversed or operated upon by a terminal operation. Once a terminal operation is performed on a stream, the stream is no longer available for further operations and is considered "consumed". Here are the main cases when a stream is consumed:
+1.Terminal Operations: Operations that produce a non-stream result. Examples include `forEach`, `reduce`, `collect`, `count`, `min`, `max`, and `anyMatch`. Once any of these terminal operations are called on a stream, the stream is consumed.
+Example code:
+   List<String> list = Arrays.asList("a", "b", "c");
+   Stream<String> stream = list.stream();
+   // Consuming the stream
+   stream.forEach(s->System.out.println(s)); // Terminal operation
+
+2.Short-circuiting Operations: Certain intermediate operations, such as `findFirst`, `findAny`, and `anyMatch` in the `Stream` API, are short-circuiting operations. They may not need to process the entire stream to produce a result. Once these operations are called and produce a result, the stream is considered consumed.
+Example code:
+   List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+   Stream<Integer> stream = numbers.stream();
+   // Consuming the stream
+   boolean anyMatch = stream.anyMatch(x -> x > 2); // Short-circuiting operation
+
+3.Terminal Operations After Intermediate Operations: If a terminal operation is called after a series of intermediate operations on a stream, the stream will be consumed after the terminal operation is executed.
+   List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+   Stream<Integer> stream = numbers.stream();
+   // Consuming the stream
+   long count = stream.filter(x -> x % 2 == 0).count(); // Intermediate operations followed by terminal operation
+
+4.Multiple Terminal Operations: If multiple terminal operations are called on the same stream, each terminal operation will consume the stream independently.
+   List<String> list = Arrays.asList("a", "b", "c");
+   Stream<String> stream = list.stream();
+   // Consuming the stream twice
+   long count = stream.count(); // First terminal operation
+   stream.forEach(s->System.out.println(s)); // Second terminal operation
+These are the main cases when a stream is considered consumed in Java. Once a stream is consumed, it cannot be reused or operated upon again. If you need to perform multiple operations on the same data, you may need to create a new stream or collect the results into a data structure before further processing.
+
+Q. How to create copy of a stream? In Java, you cannot directly create a copy of a stream. Once a stream is consumed or used, it cannot be reused or duplicated. However, you can create a new stream that contains the same elements as the original stream by applying the same operations to the original data source. Here are a few approaches you can use to "copy" a stream:
+1.Use the same data source:
+List<String> list = Arrays.asList("a", "b", "c");
+Stream<String> originalStream = list.stream();
+// Create a new stream from the same list
+Stream<String> copiedStream = list.stream();
+
+2. Re-apply operations: 
+Stream<String> originalStream = someDataSource.stream();
+// Re-apply the same operations to create a new stream
+Stream<String> copiedStream = originalStream.map(String::toUpperCase).filter(s -> s.startsWith("A"));
+
+3.Collect to a Collection:
+List<String> list = Arrays.asList("a", "b", "c");
+Stream<String> originalStream = list.stream();
+// Collect elements into a list
+List<String> copiedList = originalStream.collect(Collectors.toList());
+// Create a new stream from the copied list
+Stream<String> copiedStream = copiedList.stream();
+
+
